@@ -10,7 +10,7 @@ GAME RULES:
 */
 
 
-var scores, roundScore, activePlayer;
+var scores, roundScore, activePlayer, hide;
 scores = [0, 0];
 roundScore = 0;
 activePlayer = 0;
@@ -34,4 +34,33 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
   var diceDOM = document.querySelector('.dice');
   diceDOM.style.display = 'block';
   diceDOM.src = 'dice-' + dice + '.png';
-})
+
+  //3. Update the round score if the number rolled was NOT a 1, else switch players
+  if(dice !== 1) {
+    showDie()
+    roundScore += dice;
+    document.querySelector('#current-' + activePlayer).textContent = roundScore;
+  } else {
+    activePlayer === 0 ? activePlayer = 1: activePlayer = 0;
+    roundScore = 0;
+
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    hideDie()
+
+  };
+
+  function hideDie() {
+      hide = setTimeout(function() {
+          diceDOM.style.display = 'none';
+      }, 1000);
+  };
+
+  function showDie() {
+      clearTimeout(hide);
+  };
+});
